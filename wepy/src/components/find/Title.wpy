@@ -1,0 +1,45 @@
+<template>
+  <view class="title" style="{{'top:' + (statusBarHeight + 12) +'px'}}" >
+    <text class="iconfont i ml-4 mr-4" @tap="goback"> &#xe78a;</text><text>OBITER</text>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+
+@connect({
+  statusBarHeight: state=> state.home.statusBarHeight
+})
+
+export default class Title extends wepy.component {
+
+  methods = {
+    goback(){
+      wepy.navigateBack({     //返回上一页面或多级页面
+        delta:1
+      })
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.title{
+  $line-height: 50rpx; 
+  position: absolute;
+  top: 30px;
+  left: 0;
+  height: $line-height;
+  font-size: 40rpx;
+  line-height: $line-height;
+  vertical-align: middle;
+
+  .i{
+    font-size: 44rpx;
+    line-height: $line-height;
+    border: 20rpx solid transparent; 
+    border-top: none;
+    border-bottom: none;
+  }
+
+}
+</style>

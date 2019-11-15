@@ -1,0 +1,83 @@
+<template>
+  <view class="video">
+    <view  class="video-wrap" >
+      <video initial-time="0" class="myVideo"  src="{{curDetail.soure}}"  enable-danmu danmu-btn controls></video>
+    </view>
+    <view class="main">
+      <scroll-view scroll-y  class="com-scroll"  bindscrolltolower="scrollHandle({{group_id}})" >
+        <video-header  />
+        <video-comments />
+      </scroll-view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import VideoHeader from './com/VideoHeader'
+import Comments from './com/Comments'
+import { connect } from 'wepy-redux'
+ @connect({
+    curDetail: state => state.home.curDetail
+  })
+
+
+export default class Video extends wepy.component{
+
+  data = {
+    offset: 0
+  }
+
+  props = {
+    group_id : {
+      type: String
+    }
+  }
+  
+  components = {
+    'video-header': VideoHeader,
+    'video-comments': Comments
+  }
+
+  methods = {
+    scrollHandle(group_id){
+      this.offset += 10
+      this.$emit('getMoreCmt', group_id, this.offset);
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.video{
+  $video-height: 380rpx;
+  padding-top: $video-height;
+  box-sizing: border-box;
+  height: 100%; 
+  // position: relative;
+  .video-wrap{
+    width: 100%;
+    height: $video-height;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .myVideo{
+      width: 100%;
+      height: $video-height;
+      
+    }
+   
+  }
+
+  .main{
+    height: 100%;
+    padding: 20rpx;
+    padding-top: 0rpx;
+    padding-bottom: 0;
+    box-sizing: border-box;
+
+    .com-scroll{
+      height: 100%;
+      
+    }
+  }
+}
+</style>

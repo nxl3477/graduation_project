@@ -1,0 +1,117 @@
+<script>
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import fly from './http'
+  import {
+    setStore
+  } from 'wepy-redux'
+  import {
+    configStore
+  } from './store'
+  const store = configStore()
+  setStore(store)
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/home',
+        'pages/me',
+        'pages/find',
+        'pages/details',
+        'pages/add'
+      ],
+      'window': {
+        'backgroundTextStyle': 'light',
+        'navigationBarBackgroundColor': '#017fff',
+        'navigationBarTitleText': 'obiter',
+        'navigationBarTextStyle': '#fff',
+        'backgroundTextStyle': 'dark'
+        // "enablePullDownRefresh": true
+      }
+    }
+    globalData = {
+      userInfo: null
+    }
+    constructor() {
+      super()
+      this.use('requestfix')
+      this.use('promisify')
+    }
+    onShow() {
+      // 挂载 fly
+      this.globalData.$fly = fly
+    }
+
+
+    sleep(s) {
+      // return new Promise((resolve, reject) => {
+      //   setTimeout(() => {
+      //     resolve('promise resolved')
+      //   }, s * 1000)
+      // })
+    }
+    // async testAsync () {
+    //   const data = await this.sleep(3)
+    //   console.log(data)
+    // }
+    getUserInfo(cb) {
+      // const that = this
+      // if (this.globalData.userInfo) {
+      //   return this.globalData.userInfo
+      // }
+      // wepy.getUserInfo({
+      //   success (res) {
+      //     that.globalData.userInfo = res.userInfo
+      //     cb && cb(res.userInfo)
+      //   }
+      // })
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import './static/iconfont/iconfont.wxss';
+  .h100 {
+    height: 100%;
+  }
+  page {
+    height: 100%;
+    background-color: #f4f5f9;
+  }
+  // 上内距
+  @for $i from 1 through 10 {
+    .pt-#{$i} {
+      padding-top: 5rpx * $i;
+    }
+  }
+  // 下内距
+  @for $i from 1 through 10 {
+    .pb-#{$i} {
+      padding-bottom: 5rpx * $i;
+    }
+  }
+  // ------------margin----------------------
+  // 左边距
+  @for $i from 1 through 10 {
+    .ml-#{$i} {
+      margin-left: 5rpx * $i;
+    }
+  }
+  // 右边距
+  @for $i from 1 through 10 {
+    .mr-#{$i} {
+      margin-right: 5rpx * $i;
+    }
+  }
+  // 上边距
+  @for $i from 1 through 10 {
+    .mb-#{$i} {
+      margin-bottom: 5rpx * $i;
+    }
+  }
+  // 下边距
+  @for $i from 1 through 10 {
+    .mt-#{$i} {
+      margin-top: 5rpx * $i;
+    }
+  }
+</style>

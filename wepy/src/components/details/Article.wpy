@@ -1,0 +1,72 @@
+<template>
+  <view class="article">
+    <view class="main">
+      <scroll-view scroll-y  class="com-scroll" bindscrolltolower="scrollHandle({{group_id}})">
+        <view class="title">{{curDetail.title}}</view>
+        <author-info></author-info>
+        <article-body />
+        <article-comments/>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import AuthorInfo from './com/AuthorInfo'
+import ArticleBody from './com/ArticleBody'
+import Comments from './com/Comments'
+import { connect } from 'wepy-redux'
+
+ @connect({
+    curDetail: state => state.home.curDetail
+  })
+export default class Article extends wepy.component{
+  data = {
+    offset: 0
+  }
+  components = {
+    'article-comments': Comments,
+    'author-info': AuthorInfo,
+    'article-body': ArticleBody
+  }
+  props = {
+    group_id : {
+      type: String
+    }
+  }
+
+  methods = {
+    scrollHandle(group_id){
+      this.offset += 10
+      this.$emit('getMoreCmt', group_id, this.offset);
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.article{
+  box-sizing: border-box;
+  height: 100%; 
+
+  .title{
+    font-size: 40rpx;
+    font-weight: bold;
+    margin-top: 20rpx;
+  }
+
+
+
+  .main{
+    height: 100%;
+    padding: 20rpx;
+    padding-top: 0rpx;
+    padding-bottom: 0;
+    box-sizing: border-box;
+
+    .com-scroll{
+      height: 100%;
+      
+    }
+  }
+}
+</style>

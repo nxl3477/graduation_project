@@ -1,0 +1,66 @@
+<template>
+  <view class="container">
+    <find-navbar></find-navbar>
+    <view class="main">
+      <view class="hot">搜索热词</view>
+      <view class="section">
+        <view><text class="iconfont icon-redian icon mr-1"></text>你好你好你好</view>
+        <view><text class="iconfont icon-redian icon mr-2"></text>你好你好你好</view>
+        <view><text class="iconfont icon-redian icon mr-2"></text>你好你好你好</view>
+        <view>你好你好你好</view>
+        <view>你好你好你好</view>
+        <view>你好你好你好</view>
+        <view>你好你好你好</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import FindNavBar from '../components/find/FindNavBar'
+  import { connect } from 'wepy-redux'
+  export default class Find extends wepy.page {
+    config = {}
+    components = {
+      'find-navbar': FindNavBar
+    }
+    computed = {
+    }
+    methods = {
+    }
+    events = {
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  .container {
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 80rpx;
+    .main {
+      box-sizing: border-box;
+      padding-left: 30rpx;
+      .hot {
+        font-size: 34rpx;
+        margin: 30rpx 0;
+      }
+      .section {
+        color: #444;
+        font-size: 32rpx;
+        view {
+          display: inline-block;
+          border-radius: 40rpx;
+          padding: 10rpx 25rpx;
+          background: rgba(211, 211, 211, 0.3);
+          margin-right: 30rpx;
+          margin-bottom: 20rpx;
+        }
+        .icon {
+          color: #f15455;
+          font-size: 30rpx;
+        }
+      }
+    }
+  }
+</style>

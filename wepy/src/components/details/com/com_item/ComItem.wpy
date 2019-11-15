@@ -1,0 +1,92 @@
+<template>
+   <view class="com-item">
+      <!-- 头像 -->
+      <view class="avatar">
+        <image src="{{cmt.user.avatar_url}}"></image>
+      </view>
+      <!-- 相关 -->
+      <view class="info">
+        <!-- 用户名 和 点赞数 -->
+        <view class="name">
+          <view>{{cmt.user.name}}</view>
+          <view><text class="iconfont">&#xe643;</text>{{cmt.digg_count}}</view>
+        </view>
+        <!-- 评论内容 -->
+        <view class="content">
+          {{cmt.text}}
+        </view>
+        <!-- 发布时间 -->
+        <view class="time">
+          {{cmt.create_time}}
+        </view>
+      </view>
+    </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class ComItem extends wepy.component {
+  props = {
+    cmt: {
+      type: Object,
+      default: {},
+      twoWay: true
+    }
+  }
+
+}
+</script>
+<style lang="scss" scoped>
+ // 单条评论
+.com-item{
+  $avatar-width: 60rpx;
+  padding-left: $avatar-width + 30rpx;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 40rpx;
+  // 头像
+  .avatar{
+    position: absolute;
+    left: 15rpx;top: 10rpx;
+    
+    image{
+      width: $avatar-width;
+      height: $avatar-width;
+      border-radius: 50%;
+    }
+  }
+  
+  // 信息区
+  .info{
+    // 发布者
+    .name{
+      font-size: 26rpx;
+      display: flex;
+      justify-content: space-between;
+      // 名字
+      view:nth-of-type(1){
+        color: #476a9d;
+      }
+      // 点赞数
+      view:nth-of-type(2){
+        color: #9aa2b0;
+
+        text{
+          margin-right: 15rpx;
+        }
+      }
+    }
+    // 评论文字
+    .content{
+      font-size: 28rpx;
+      color: #222;
+      margin: 10rpx 0;
+    }
+
+    // 发布时间
+    .time{
+      font-size: 26rpx;
+      color: #9aa2b0;
+    }
+  }
+}
+</style>

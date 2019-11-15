@@ -1,0 +1,119 @@
+<template>
+  <view class="types-bar">
+    <view class="slide">
+      <scroll-view scroll-x scroll-left="{{scrollPos}}" bindscroll="scrollHandle" class="type-scroll">
+        <repeat for="{{types}}" index="index" item="item" key="index">
+          <view @tap="kindClickHandle({{index}})" class="{{kindId == index ? 'active' : ''}}">{{item.type_name}}</view>
+        </repeat>
+      </scroll-view>
+    </view>
+    <!-- 添加及 用户入口 -->
+    <view class="add-type">
+      <!-- <text @tap="toAddPage" class="iconfont i">&#xe634;</text> -->
+      <text @tap="toUserPage" class="iconfont i">&#xe604;</text>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import { types } from '../../../store'
+  const { SET_TYPE_POS, HOME_CHANGE_KIND } = types.home
+
+  @connect({
+    kindId: state => state.home.kindId,
+    types: state => state.home.types,
+    scrollPos: state => state.home.scrollPos
+  }, {
+    setTypePos: SET_TYPE_POS,
+    changeKind: HOME_CHANGE_KIND
+  })
+  export default class TypesBar extends wepy.component {
+    methods = {
+      kindClickHandle(kindId) {
+        this.methods.changeKind({
+          kindId
+        })
+      },
+      toUserPage() {
+        wepy.navigateTo({
+          url: '/pages/me', //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+          success: function() {}, //成功后的回调；
+          fail: function() {}, //失败后的回调；
+          complete: function() {} //结束后的回调(成功，失败都会执行)
+        })
+      },
+      scrollHandle(e) {
+        console.log(e.detail)
+        // this.setTypePos()
+      },
+      toAddPage() {
+        wepy.navigateTo({
+          url: '/pages/add',
+          success: function() {},
+          fail: function() {},
+          complete: function() {}
+        })
+      }
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  // 分类条
+  .types-bar {
+    $line-height: 80rpx;
+    height: $line-height;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    padding-right: $line-height;
+    box-shadow: 0rpx 1rpx 10rpx 3rpx rgba(0, 0, 0, 0.075); // 分类滑动条
+    .slide {
+      background: #fff;
+      color: #888;
+      font-size: 30rpx;
+      box-sizing: border-box; // border-bottom: 1rpx solid #ddd;
+      &.active {
+        color: #222;
+      } // 滚动条
+      .type-scroll {
+        white-space: nowrap;
+      } // 滚动条的元素
+      view {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+        line-height: $line-height - 3rpx;
+        margin-left: 30rpx;
+        box-sizing: border-box;
+        &:nth-last-of-type(1) {
+          margin-right: 30rpx;
+        }
+      }
+      .active {
+        color: #0b84fe;
+        border-bottom: 2px solid #0b84fe;
+      }
+    } // 添加按钮
+    .add-type {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: $line-height;
+      height: $line-height;
+      background: #fff;
+      text-align: center;
+      line-height: $line-height;
+      vertical-align: middle;
+      border-left: 1rpx solid #ededed;
+      color: #555;
+      box-shadow: -6rpx 0rpx 8rpx -2rpx rgba(0, 0, 0, 0.15);
+      text {
+        font-size: 40rpx !important;
+        width: $line-height;
+        height: $line-height; // display: inline-block;
+      }
+    }
+  }
+</style>

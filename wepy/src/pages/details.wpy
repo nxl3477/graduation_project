@@ -1,0 +1,99 @@
+<template>
+  <view class="container" wx:if="{{ready}}">
+    <!-- <simple-nav></simple-nav> -->
+    <app-video :group_id.sync="group_id"  wx:if="{{mode==1}}"></app-video>
+    <app-article :group_id.sync="group_id" wx:if="{{mode==0}}"></app-article>
+    <app-footer ></app-footer>
+  </view>
+  <app-loading wx:if="{{!ready}}"></app-loading>
+</template>
+<script>
+import wepy from 'wepy'
+import Video from '../components/details/Video'
+import Article from '../components/details/Article'
+import ControFooter from '../components/ControlFooter'
+import Loading from '../components/Loading'
+import { connect } from 'wepy-redux'
+import { types } from '../store'
+
+const { SET_CUR_DETAIL } = types.home
+ @connect({
+    curDetail: state => state.home.curDetail,
+    curCmts: state => state.home.curCmts
+  }, {
+    setCurDeatil: SET_CUR_DETAIL
+  })
+export default class detail extends wepy.page {
+  
+  data = {
+    mode: 0,
+    group_id: 0,
+    ready: false
+  }
+
+  config = {
+    "navigationBarTitleText": "obiter"
+  }
+
+  components = {
+    'app-video': Video,
+    'app-article': Article,
+    'app-footer': ControFooter,
+    'app-loading': Loading
+  }
+  computed = {
+    myDetail(){
+      return this.detail
+    }
+  }
+
+  events = {
+      getMoreCmt(group_id, offset){
+        const fly = this.$parent.globalData.$fly
+        fly.get('/cmt', { group_id, offset, count: 10}).then(res => {
+          const origin = this.curCmts
+          const newInfo = {...res.data, comments: [ ...origin.comments, ...res.data.comments ] }
+          this.methods.setCurDeatil({ curCmts: newInfo })
+        })
+      }
+    }
+
+  onLoad (option) {
+    ;(async() =>{
+      const group_id = this.group_id = option.group_id
+      const mode = this.mode = option.mode
+      const fly = this.$parent.globalData.$fly
+      let curDetail = await fly.get('/details', { group_id, mode })
+      if(curDetail.status == 404){
+        wx.showModal({
+          title: '提示',
+          content: curDetail.msg,
+          showCancel: false,
+          complete(){
+            wx.navigateBack({     //返回上一页面或多级页面
+              delta:1
+            })
+          }
+        })
+        return 
+      }
+
+      let curCmts = await fly.get('/cmt', {group_id, offset: 1, count: 10})
+      if(curDetail.status == 200) this.ready = true
+      curDetail = curDetail.data
+      curCmts = curCmts.data
+      this.methods.setCurDeatil({ curDetail, curCmts })
+    })();
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.container{
+  height: 100%;
+  background: #fff;
+  padding-bottom: 80rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+</style>

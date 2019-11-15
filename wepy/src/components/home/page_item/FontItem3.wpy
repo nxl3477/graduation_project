@@ -1,0 +1,69 @@
+<template>
+  <view  class="main">
+    <view class="main-title">
+      {{info.title}}
+    </view>
+    <view class="list">
+      <view class="li"><image src="{{info.img_holder[0]}}" /></view>
+      <view class="li"><image src="{{info.img_holder[1]}}" /></view>
+      <view class="li"><image src="{{info.img_holder[2]}}" /></view>
+    </view>
+    <view class="footer">
+      <text class="auther">{{info.auther}}</text>
+      <text class="cmt">评论: {{info.com_number}}</text>
+      <text class="create_time">{{info.create_time}}</text>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class FontItem3 extends wepy.component {
+    props = {
+      info: {
+        type: Object,
+        default: {}
+      }
+    }
+
+  }
+</script>
+
+<style lang="scss" scoped>
+  // 主体区域
+  .main{
+    padding: 15rpx 0; // 标题 
+    .main-title {
+      font-size: 30rpx;
+    }
+     // 展示图片
+    .list {
+      margin-top: 20rpx;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      height: 200rpx; // 图片
+      .li {
+        display: inline-block;
+        flex: 0 0 33%;
+        height: 100%;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+     /* 底部 */
+    .footer {
+      margin-top: 20rpx;
+      font-size: 22rpx;
+      color: #999;
+      .auther {
+        margin-right: 20rpx;
+      }
+      .cmt{
+        margin-right: 20rpx;
+      }
+    }
+  }
+</style>

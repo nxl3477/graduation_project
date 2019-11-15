@@ -1,0 +1,33 @@
+<template>
+  <view class="nav">
+    <!-- <app-search   class="search" /> -->
+    <type-bar />
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import TypesBar from './types_bar/TypesBar'
+import Search from './search/Search'
+import { actions, types } from '@/store'
+const {HOME_CHANGE_KIND } = types.home
+
+export default class Navbar extends wepy.component {
+  components = {
+    'type-bar': TypesBar,
+    'app-search': Search
+  }
+}
+</script>
+<style lang="scss" scoped>
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  box-sizing: border-box;
+  color: #fefefe; 
+  border-top: 1px solid #ddd; 
+}
+</style>

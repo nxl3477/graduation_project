@@ -1,0 +1,39 @@
+<template>
+  <view class="header">
+    <view class="title"> {{curDetail.title}}</view>
+    <!-- <view class="desc">
+      [简介] 2018年中非合作论坛北京峰会圆桌会议9月4日在人民大会堂举行. 众多非洲客人与会, 这张圆桌有多大? 新华社"第一视点"为你呈现.
+    </view> -->
+    <author-info></author-info>
+    
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import AuthorInfo from './AuthorInfo'
+import { connect } from 'wepy-redux'
+@connect({
+  curDetail: state => state.home.curDetail
+})
+export default class VideoHeader extends wepy.component {
+  components = {
+    'author-info': AuthorInfo
+  }
+}
+</script>
+<style lang="scss" scoped>
+.header{
+  // padding-bottom: 20rpx;
+  margin: 20rpx;
+  // margin-bottom: 30rpx;
+  .title{
+    font-size: 42rpx;
+  }
+  .desc{
+    color:#777;
+    font-size: 28rpx;
+    margin-top: 30rpx;
+  }
+
+}
+</style>

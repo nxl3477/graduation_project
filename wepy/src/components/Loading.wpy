@@ -1,0 +1,37 @@
+<template>
+  <view class="loading"> 
+    <view class="wrap">
+      <image src="../static/img/loading.gif"></image>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class Loading extends wepy.component {
+  
+}
+</script>
+<style lang="scss" scoped>
+.loading{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #fff;
+  .wrap{
+    $wrap-w: 450rpx;
+    $wrap-h: 330rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -$wrap-w / 2;
+    margin-top: -($wrap-h * 0.66);
+    width: $wrap-w;
+    height: $wrap-h;
+
+    image{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+</style>

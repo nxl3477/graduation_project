@@ -1,0 +1,51 @@
+<template>
+  <view class="comments">
+    <view class="hot">热门评论</view>
+    <view class="main" wx:if="{{curCmts.comments}}">
+      <repeat for="{{curCmts.comments}}" key="index" index="index" item="item">
+        <com-item :cmt.sync="item"></com-item>
+      </repeat>
+      <view class="bottom" wx:if="{{!curCmts.has_more}}">--------我也是有底线的--------</view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import ComItem from './com_item/ComItem'
+import { connect } from 'wepy-redux'
+import fly from '../../../http'
+
+@connect({
+  curCmts: state => state.home.curCmts
+})
+export default class Comments extends wepy.component{
+
+  components = {
+    'com-item': ComItem
+  }
+}
+</script>
+<style lang="scss" scoped>
+.comments{
+  // height: 400rpx;
+  // background: pink;
+  border-top: 1px solid #ddd;
+  padding-top: 40rpx;
+  padding-bottom: 40rpx;
+
+  .hot{
+    border-left: 2px solid pink;
+    padding-left: 20rpx;
+    font-size: 30rpx;
+    margin-left: 20rpx;
+    margin-bottom: 40rpx;
+  }
+
+  .bottom{
+    text-align: center;
+    font-size: 25rpx;
+    color:#ddd;
+    
+  }
+}
+</style>

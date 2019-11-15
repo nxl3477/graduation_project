@@ -1,0 +1,41 @@
+<template>
+  <view class="nav">
+    <app-title></app-title>
+    
+    <!-- <view>obiter</view> -->
+    <find-searchinput ></find-searchinput>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import SearchInput from './search/SearchInput'
+import Title from './Title'
+
+
+export default class FindNavBar extends wepy.component {
+
+  components = {
+    'find-searchinput': SearchInput,
+    'app-title': Title
+  }
+
+  methods = {
+  }
+}
+</script>
+<style lang="scss" scoped> 
+.nav{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  box-sizing: border-box;
+  background: #007efe;
+  color: #fefefe;
+  padding-top:160rpx;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+}
+</style>

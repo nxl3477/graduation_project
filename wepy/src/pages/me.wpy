@@ -1,0 +1,207 @@
+
+<template>
+  <view class="container">
+    <view class="header">
+      <view class="user">
+        <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+        <view class="username">
+          <button class="login" wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="login">尚未登录</button>
+          <text wx:if="{{userInfo}}">{{userInfo.nickName}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="btn-list">
+        <view class="my-letter">
+          <text class="iconfont">&#xe602;</text>我的私信
+        </view>
+        <view class="my-attention">
+          <text class="iconfont">&#xe635;</text>我的关注
+        </view>
+        <view class="my-collect">
+          <text class="iconfont">&#xe7a9;</text>我的收藏
+        </view>
+        <view class="my-record">
+          <text class="iconfont">&#xe636;</text>浏览记录
+        </view>
+      </view> -->
+    <!-- 为你推荐 -->
+    <view class="recommend" wx:if="{{blogs}}">
+      <view class="rec-title">
+        <text class="iconfont">&#xe636;</text>历史记录
+      </view>
+      <view class="news-body">
+        <!-- bindscrolltolower="scrollHandle({{id}})" -->
+        <!-- <scroll-view  scroll-y="true" > -->
+        <repeat for="{{blogs}}" key="index" index="index" item="item">
+          <view class="border">
+            <collect-item :item.sync="item"></collect-item>
+          </view>
+        </repeat>
+        <!-- </scroll-view> -->
+      </view>
+    </view>
+    <!-- <button type="default" @tap="showstate()">点我</button> -->
+    <!-- {{kindId}} -->
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {
+    connect
+  } from 'wepy-redux'
+  import CollectItem from '../components/me/CollectItem'
+  import fly from '../http'
+  @connect({
+    kindId: state => state.home.kindId
+  })
+  export default class Me extends wepy.page {
+    data = {
+      userInfo: {},
+      blogs: null
+    }
+    config = {
+      'navigationBarTitleText': 'obiter'
+    }
+    components = {
+      'collect-item': CollectItem
+    }
+    methods = {
+      async login(e) {
+        const userInfo = e.detail.userInfo
+        // 获取code
+        const {
+          code
+        } = await this.methods.wxLogin()
+        const res = await fly.post('/login', { ...userInfo,
+          code
+        })
+        const megerUserInfo = { ...userInfo,
+          ...res.data
+        }
+        console.log(res.data)
+        this.userInfo = megerUserInfo
+        wx.setStorage({
+          key: 'userInfo',
+          data: megerUserInfo,
+          success() {
+            console.log('用户信息存储成功')
+          }
+        })
+      },
+      // 微信 登录 promise
+      wxLogin() {
+        return new Promise((resolve, reject) => {
+          wx.login({
+            success(res) {
+              resolve(res)
+            },
+            fail() {
+              reject()
+            }
+          })
+        })
+      }
+    }
+    onLoad() {
+      const _this = this
+      wx.getStorage({
+        key: 'userInfo',
+        success(data) {
+          _this.userInfo = data.data
+        },
+        fail() {
+          _this.userInfo = null
+        }
+      })
+      fly.get('/blogs').then(res => {
+        this.blogs = res.data
+        this.$apply();
+      })
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  .container {
+    box-sizing: border-box;
+    overflow-y: scroll;
+    .header {
+      background: #fff;
+      height: 300rpx;
+      border: 1px solid #ddd;
+      border-top: none;
+      position: relative;
+      .user {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        .avatar {
+          $img-size: 130rpx;
+          width: $img-size;
+          height: $img-size;
+          border-radius: 50%;
+          display: block;
+          margin: 0 auto;
+          margin-bottom: 10rpx;
+        }
+        .username {
+          font-size: 36rpx;
+          text-align: center;
+        }
+        .login {
+          outline: none;
+          border: none;
+          list-style: none;
+          background-color: transparent;
+          width: 100rpx;
+          padding: 0;
+          margin: 0;
+          height: 50rpx;
+          font-size: 20rpx;
+          margin: 0 auto;
+        }
+      }
+    }
+    .btn-list {
+      $btn-height: 85rpx;
+      margin-top: 50rpx;
+      font-size: 34rpx;
+      view {
+        text-indent: 40rpx;
+        height: $btn-height;
+        line-height: $btn-height;
+        background: #fefefe; // margin-bottom: 20rpx;
+        border-top: 1rpx solid #ddd; // border-bottom: 1px solid #ddd;
+        &:nth-last-of-type(1) {
+          border-bottom: 1rpx solid #ddd;
+        }
+        text {
+          margin-right: 20rpx;
+        }
+      }
+      .my-letter {}
+      .my-attention {}
+      .my-collect {}
+      .my-record {}
+    }
+    .recommend {
+      margin-top: 40rpx;
+      background: #fff;
+      font-size: 34rpx;
+      padding: 20rpx 30rpx 30rpx 30rpx;
+      .rec-title {
+        .iconfont {
+          font-size: 36rpx;
+          color: goldenrod;
+          margin-right: 20rpx;
+        }
+      }
+      .news-item {}
+    }
+    .border {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+</style>

@@ -1,0 +1,70 @@
+<template>
+  <view class="search"  >
+    <view class="search-wrap">
+      <text class="iconfont i">&#xe63d;</text>
+      <input type="text" class="input" focus placeholder="请输入关键字"/>
+    </view>
+    <view class="cancel" @tap="goback" >取消</view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class SearchInput extends wepy.component{
+  methods = {
+    goback(){
+      wepy.navigateBack({     //返回上一页面或多级页面
+        delta:1
+      })
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.search{
+  $line-height: 80rpx;
+  $wrap-height: 60rpx;
+  padding: 10rpx 120rpx 10rpx 50rpx;
+  box-sizing: border-box;
+  color: #000;
+  background: #fff;
+  position: relative;
+
+  .search-wrap{
+   
+    box-sizing: border-box;
+    background: rgba(211, 211, 211, 0.3);
+    border-radius: 15rpx;
+    padding-left: $wrap-height;
+    padding-right: 20rpx;
+    position: relative;
+    line-height: $wrap-height;
+    color: #666;
+    .i{
+      position: absolute;
+      top: 0;
+      left: 15rpx;
+      vertical-align: middle;
+      line-height: $wrap-height;
+    }
+
+   
+
+    .input{
+      height: $wrap-height;
+      font-size: 28rpx;
+    }
+  }
+
+  .cancel{
+    position: absolute;
+    top: 0;
+    right: 30rpx;
+    color: #007efe;
+    vertical-align: middle;
+    line-height: 78rpx;
+  }
+
+  
+}
+</style>

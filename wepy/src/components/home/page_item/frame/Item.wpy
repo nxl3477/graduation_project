@@ -1,0 +1,117 @@
+<template>
+  <view class="item-wrap">
+    <view class="header">
+      <view class="h-left">
+        <image src="http://wxhboy.com/img/e.jpg" />
+        <text class="nick-name">{{info}}</text>
+      </view>
+      <view class="h-right">
+        <text>新闻</text> / <text>稀土君</text>
+      </view>
+    </view>
+    <!-- 内容区 -->
+    <slot name="main"></slot>
+    <!-- 内容区 -->
+    <view class="footer">
+      <view class="f-left">
+        <view><text class="iconfont i">&#xe633;</text> <text>喜欢</text></view>
+        <view><text class="iconfont i">&#xe684;</text> <text>评论</text></view>
+      </view>
+      <view class="f-right">
+        <view><text class="iconfont i">&#xe6e9;</text> </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Item extends wepy.component {
+    props = {
+      info: Object
+    }
+
+    onLoad(){
+      console.log(this)
+    }
+  }
+</script>
+<style lang="scss">
+  $fz-color: #97a5b3;
+  .item-wrap {
+    box-sizing: border-box;
+    padding: 0 20rpx 10rpx;
+    background: #fff;
+    margin-top: 20rpx; // 头部用户名 等
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10rpx;
+      height: 60rpx;
+      padding-top: 20rpx; // 头部左
+      .h-left {
+        height: 60rpx;
+        line-height: 1rpx;
+        color: #39393a;
+        font-size: 0;
+        padding: 0 20rpx;
+        border-radius: 50rpx; // 头像
+        image {
+          width: 60rpx;
+          height: 60rpx;
+          border-radius: 50%;
+          vertical-align: middle;
+          margin-right: 15rpx;
+        } //  昵称
+        .nick-name {
+          font-size: 34rpx;
+          line-height: 60rpx;
+          vertical-align: middle;
+        }
+        &:active {
+          background: rgba(111, 111, 111, 0.18);
+        }
+      } // 头部右， 类型
+      .h-right {
+        color: $fz-color;
+        font-size: 26rpx;
+        line-height: 60rpx;
+      }
+    } // 底部按钮
+    .footer {
+      display: flex;
+      color: $fz-color;
+      justify-content: space-between;
+      line-height: 70rpx; // 喜欢 评论
+      .f-left {
+        display: flex;
+        view {
+          margin-right: 30rpx;
+          line-height: 70rpx;
+          font-size: 32rpx;
+          border-radius: 50rpx;
+          box-sizing: border-box;
+          padding: 0 20rpx;
+          .i {
+            color: #d3d4e2;
+            display: inline-block;
+            margin-right: 20rpx;
+          }
+          &:active {
+            background: rgba(111, 111, 111, 0.18);
+          }
+        }
+      } // 垃圾桶
+      .f-right {
+        line-height: 70rpx;
+        padding: 0 20rpx;
+        border-radius: 50%;
+        .i {
+          color: $fz-color;
+        }
+        &:active {
+          background: rgba(111, 111, 111, 0.18);
+        }
+      }
+    }
+  }
+</style>

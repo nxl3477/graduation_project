@@ -1,0 +1,95 @@
+<template>
+  <scroll-view class="wrap" scroll-y="true" bindscrolltolower="scrollHandle({{id}})">
+    <!-- <button @tap="showRedux">点我查看</button> -->
+    <repeat for="{{getFallsData[id]}}" key="index" index="index" item="item" >
+      <view class="border-t" @tap="topageHandle({{item.group_id}}, {{item.mode}})" wx:if="{{item.mode == 1}}" >
+        <video-item :info.sync="item" ></video-item>
+      </view>
+      <view class="border-t" @tap="topageHandle({{item.group_id}}, {{item.mode}})" wx:if="{{item.mode == 0}}" >
+        <font-item-0 :info.sync="item" wx:if="{{item.img_holder.length == 0}}" ></font-item-0>
+        <font-item-1 :info.sync="item" wx:if="{{item.img_holder.length == 1}}" ></font-item-1>
+        <font-item-3 :info.sync="item" wx:if="{{item.img_holder.length == 3}}" ></font-item-3>
+      </view>
+      <!-- <SubjectCard :item.sync="item" :isFinished.sync="true"/> -->
+    </repeat>
+  </scroll-view>
+</template>
+<script>
+import wepy from 'wepy'
+import NavBar from './NavBar'
+import FontItem0 from './page_item/FontItem0'
+import FontItem1 from './page_item/FontItem1'
+import FontItem3 from './page_item/FontItem3'
+import VideoItem from './page_item/VideoItem'
+import { connect } from 'wepy-redux'
+import fly from '../../http'
+
+ @connect({
+    typeTrack: state => state.home.typeTrack,
+  })
+
+export default class Page extends wepy.component {
+  components = {
+    'navbar': NavBar,
+    'font-item-0': FontItem0,
+    'font-item-1': FontItem1,
+    'font-item-3': FontItem3,
+    'video-item': VideoItem
+  }
+  
+  props = {
+    id: {
+      type: Object
+    }
+  }
+  methods = {
+    topageHandle(group_id, mode){
+      wepy.navigateTo({
+        url: `/pages/details?group_id=${group_id}&mode=${mode}`,  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+        success:function(){},        //成功后的回调；
+        fail:function(){},          //失败后的回调；
+        complete: function(){}      //结束后的回调(成功，失败都会执行)
+      })
+    },
+    showRedux(){
+      console.log(this.typeTrack[1])
+    },
+    scrollHandle(id){
+      this.$emit('getMore', id);
+    }
+  }
+
+  computed = {
+    getFallsData() {
+      return this.typeTrack
+    }
+  }
+
+  onLoad() {
+    console.log(this.id)
+  }
+  
+}
+</script>
+<style lang="scss" scoped >
+.wrap{
+  // display: inline-block;
+  height: 100%;
+  padding: 0 20rpx;
+  padding-top: 15rpx;
+  box-sizing: border-box;
+  background: #fff;
+  
+  .border-t + .border-t{
+    border-top: 1px solid #eee;
+  }
+
+  .footer{
+    margin-top: 10rpx;
+    height: 50rpx;
+    text-align: center;
+  }
+
+}
+
+</style>

@@ -1,0 +1,25 @@
+<template>
+  
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Footer extends wepy.component {
+    props = {
+      info:{
+        type: String,
+        default: {}
+      }
+    }
+
+    onLoad(){
+      console.log(this)
+    }
+  }
+</script>
+<style lang="scss">
+ .footer {
+  .auther {
+    
+  }
+ }
+</style>

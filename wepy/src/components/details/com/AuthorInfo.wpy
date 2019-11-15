@@ -1,0 +1,69 @@
+<template>
+  <view class="info">
+    <view class="author">
+      <image src="{{curDetail.avatar}}"></image>
+      <view class="author-name">
+        <view>{{curDetail.auther}}</view>
+        <!-- <view>9-5 17:41</view> -->
+      </view>  
+    </view>
+    <view class="view-times">
+        <text space="nbsp">浏览量: </text><text>{{curDetail.open_times}}</text>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+@connect({
+  curDetail: state => state.home.curDetail
+})
+export default class AuthorInfo extends wepy.component {
+
+
+  
+}
+</script>
+<style lang="scss" scoped>
+.info{
+    $hint-color: #999;
+    margin-top: 40rpx;
+    display: flex;
+    justify-content: space-between;
+    color: $hint-color;
+    font-size: 22rpx;
+    // 作者
+    .author{
+      $avatar-size: 60rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      // 作者名称
+      .author-name{
+        font-size: 26rpx;
+        color: #222;
+        margin-left: 20rpx;
+        
+        /* // 日期
+        view:nth-last-of-type(1){
+          color: $hint-color;
+          font-size: 22rpx;
+        } */
+
+      }
+      // 头像
+      image{
+        width:$avatar-size;
+        height: $avatar-size;
+        border-radius: 50%;
+      }
+    }
+    // 浏览量
+    .view-times{
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+
+</style>

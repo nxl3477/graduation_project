@@ -1,0 +1,21 @@
+<template>
+  <view class="article-body">
+    {{curDetail.body}}
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+@connect({
+  curDetail: state => state.home.curDetail
+})
+export default class AritcleBody extends wepy.component {
+  
+}
+</script>
+<style lang="scss" scoped>
+.article-body{
+  margin: 40rpx 0;
+  font-size: 32rpx;
+}
+</style>

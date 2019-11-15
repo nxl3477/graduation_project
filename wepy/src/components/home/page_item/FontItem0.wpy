@@ -1,0 +1,72 @@
+<template>
+  <view class="container">
+    <div class="main-title">
+      {{info.title}}
+    </div>
+    <view class="footer">
+      <text class="auther">{{info.auther}}</text>
+      <text class="cmt">评论: {{info.com_number}}</text>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import Footer from './frame/Footer'
+export default class FontItem extends wepy.component {
+
+  props = {
+    info:{
+      type: String,
+      default: {}
+    }
+  }
+
+  components = {
+    'falls-footer': Footer
+  }
+
+  computed = {
+    returnInfo() {
+      console.log(this)
+      return this.info
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .container{
+    background: #fff;
+    padding: 25rpx 0;
+
+    // 标题 
+    .main-title{
+      /* font-weight: bold; */
+      font-size: 30rpx;
+    }
+    // 简介
+    .desc{
+      margin-top: 20rpx;
+      font-size: 30rpx;
+      color: #67727b;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      letter-spacing: 0.6rpx;
+    }
+
+
+    /* 底部 */
+    .footer {
+      margin-top: 20rpx;
+      font-size: 22rpx;
+      color: #999;
+      .auther {
+        margin-right: 20rpx;
+      }
+    }
+  }
+    
+  
+</style>

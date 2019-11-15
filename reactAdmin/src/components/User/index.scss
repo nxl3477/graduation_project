@@ -1,0 +1,65 @@
+.user-window {
+  $size: 40px;
+  $offset: 40px;
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+  cursor: pointer;
+  padding-left: 10px;
+
+  &:active {
+    background: #ddd;
+  }
+
+  // 用户头像
+  .avatar{
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    
+    &:hover {
+      animation: user-rotate 4s linear infinite;
+    }
+  }
+
+  .nick-name {
+    margin-left: 10px;
+    margin-right: 10px;
+    line-height: 60px;
+    text-align: right;
+  }
+
+}
+
+// 用户详细信息
+.info-wrap {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 7px;
+  color: rgba(0,0,0,0.65);
+  
+  .info-item{
+    margin-right: 8px;
+    display: inline-block;
+    color: rgba(0,0,0,0.85);
+  }
+}
+// 注销
+.logout {
+  $height: 50px;
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: $height;
+  line-height: $height;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border-top: 1px solid #ddd;
+  text-align: right;
+}
+
+@keyframes user-rotate{
+  to{
+    transform: rotate(360deg);
+  }
+}

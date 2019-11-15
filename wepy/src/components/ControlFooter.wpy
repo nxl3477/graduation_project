@@ -1,0 +1,72 @@
+<template>
+  <view class="footer">
+    <view class="footer-wrap">
+      <input class="input-com" type="text" cursor-spacing="10" placeholder="写评论..." />
+      <text class="iconfont btn-com-pos">&#xe64a;</text>
+      <!-- ☆★ -->
+      <text class="iconfont btn-collect">&#xe7a9;</text>
+      <text class="iconfont btn-share">&#xe60c;</text>
+      <text class="iconfont btn-wabei">&#xe621;</text>
+
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class ControlFooter extends wepy.component {
+  
+}
+</script>
+<style lang="scss" scoped>
+.footer{
+  $footer-height: 80rpx;
+  height: $footer-height;
+  width: 100%;
+  background: #fefefe;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  border-top: 1px solid #ddd;
+  .footer-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    font-size: 40rpx;
+    color: #393939;
+    .input-com{
+      $icon-size: 70rpx;
+      font-size: 30rpx;
+      border: 2rpx solid #ddd;
+      background: #f3f4f5;
+      border-radius: 30rpx;
+      width: 300rpx;
+      height: 60rpx;
+      vertical-align: middle;
+      box-sizing: border-box;
+      padding-left: $icon-size;
+      padding-right: 20rpx;
+    }
+
+    .btn-com-pos{
+      font-size: 45rpx;
+    }
+
+    // 收藏
+    .btn-collect{
+      font-size: 45rpx;
+    }
+    .btn-share{
+      font-size: 46rpx;
+    }
+    .btn-wabei{
+      font-size: 42rpx;
+    }
+
+  }
+  
+
+}
+</style>

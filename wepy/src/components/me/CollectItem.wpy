@@ -1,0 +1,38 @@
+<template>
+  <view class="wrap">
+    <view class="right">
+      <view>
+        {{item.title}}
+      </view>
+      <view class="info"><text  space="nbsp" >{{item.auther}}   浏览时间:  {{item.create_time}}</text></view>
+    </view>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class CollectItem extends wepy.component {
+  props = {
+    item: {
+      type: Object
+    }
+  }
+}
+</script>
+<style lang="scss" scoped >
+.wrap{
+  margin: 20rpx 0;
+
+  .right{
+    font-size: 30rpx;
+    padding-left: 20rpx;
+    box-sizing: border-box;
+
+    .info{
+      margin-top: 10rpx;
+      font-size: small;
+      color: #bcbcbc;
+    }
+  }
+}
+</style>

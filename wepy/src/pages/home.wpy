@@ -1,0 +1,218 @@
+<template>
+  <view class="wrapper">
+    <navbar />
+    <swiper class="test" current="{{kindId}}" bindchange="currentChangeHandle" skip-hidden-item-layout>
+      <repeat for="{{allTypes}}" key="index" index="index" item="item">
+        <swiper-item>
+          <!-- wx:if="{{index < 2}}" -->
+          <page :id.sync="item.id" wx:if="{{typeTrack[item.id]}}"></page>
+          <app-loading wx:if="{{!typeTrack[item.id]}}"></app-loading>
+        </swiper-item>
+        <!-- <page></page> -->
+      </repeat>
+    </swiper>
+    <view class="flash-icon" @tap="clickMoreHandle">
+      <text class="{{isRotate ? 'iconfont flash-action':'iconfont flash-static'}}">&#xe60b;</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import Navbar from '../components/home/NavBar'
+  import Page from '../components/home/Page'
+  import Loading from '../components/Loading'
+  import fly from '../http'
+  import { types } from '../store'
+  const {
+    HOME_STATUS_HEIGHT,
+    HOME_CHANGE_KIND,
+    SET_TYPE_TRACK,
+    SET_TYPE_POS,
+    SAVE_TYPES
+  } = types.home
+
+  @connect({
+    allTypes: state => state.home.types,
+    scrollPos: state => state.home.scrollPos,
+    kindId: state => state.home.kindId,
+    typeTrack: state => state.home.typeTrack
+  }, {
+    getStatusHeight: HOME_STATUS_HEIGHT,
+    changeKind: HOME_CHANGE_KIND,
+    setTypeTrack: SET_TYPE_TRACK,
+    saveTypes: SAVE_TYPES
+  })
+
+  export default class Home extends wepy.page {
+    data = {
+      type_id: 143,
+      isRotate: false
+    }
+    computed = {
+      rotateClassName() {
+        return this.isRotate ? 'iconfont flash-action' : 'iconfont flash-static'
+      }
+    }
+    config = {
+      'navigationBarTitleText': 'obiter'
+    }
+    components = {
+      navbar: Navbar,
+      page: Page,
+      'app-loading': Loading
+    }
+    methods = {
+      init() {
+        const {
+          statusBarHeight
+        } = wepy.getSystemInfoSync()
+        this.getStatusHeight({
+          statusBarHeight
+        })
+      },
+      // 监听swiper变化,将已加载的存入 redux
+      currentChangeHandle(e) {
+        const {
+          current
+        } = e.detail
+        this.methods.setKindId(current)
+        const type_id = this.allTypes[current].id
+        this.type_id = type_id
+        if (this.typeTrack[type_id]) {
+          return
+        }
+        this.methods.getFallsLists.call(this, type_id)
+        // 清理不使用的
+        Object.keys(this.typeTrack).forEach((ele, index) => {
+          if (+ele < (type_id - 2) || +ele > (type_id + 2)) {
+            this.methods.setTypeTrack({
+              [ele]: undefined
+            })
+          }
+        })
+      },
+      getFallsLists(type_id, desc = true) {
+        let origin = []
+        this.isRotate = true
+        const time_start = new Date().getTime()
+        if (this.typeTrack[type_id]) {
+          origin = this.typeTrack[type_id]
+        }
+        // 请求当前切换至的数据
+        fly.get('/falls', {
+          count: 10,
+          type_id
+        }).then(res => {
+          if (desc) {
+            this.methods.setTypeTrack({
+              [type_id]: [...origin, ...res.data]
+            })
+          } else {
+            this.methods.setTypeTrack({
+              [type_id]: [...res.data, ...origin]
+            })
+          }
+          const diff = new Date().getTime() - time_start
+          if (diff < 1500) {
+            const wait = 1500 - diff
+            setTimeout(() => {
+              this.isRotate = false
+              this.$apply()
+            }, wait);
+          } else {
+            this.isRotate = false
+            this.$apply()
+          }
+        })
+      },
+      setKindId(kindId) {
+        this.changeKind({
+          kindId
+        })
+      },
+      // 页面跳转
+      pageto() {
+        // wepy.navigateTo({
+        //   url: '/pages/me',  // 跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+        //   success: function() {},        // 成功后的回调；
+        //   fail: function() {},          // 失败后的回调；
+        //   complete: function() {}      // 结束后的回调(成功，失败都会执行)
+        // })
+      },
+      clickMoreHandle() {
+        const type_id = this.type_id
+        this.methods.getFallsLists.call(this, type_id, false)
+      },
+      isLoading(index) {}
+    }
+    events = {
+      getMore(type_id) {
+        this.methods.getFallsLists.call(this, type_id)
+      }
+    }
+    onShow() {
+      this.methods.init()
+      this.methods.pageto()
+    }
+    onLoad() {;
+      (async() => {
+        const typesRes = await fly.get('/types')
+        this.methods.saveTypes(typesRes.data)
+        const fallsRes = await fly.get('/falls', {
+          count: 10,
+          offset: 0
+        })
+        const key = typesRes.data[0].id
+        this.methods.setTypeTrack({
+          [key]: fallsRes.data
+        })
+      })();
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .wrapper {
+    height: 100%;
+    padding-top: 80rpx;
+    box-sizing: border-box;
+    position: relative;
+    .test {
+      height: 100%;
+    }
+    .flash-icon {
+      $icon-height: 95rpx;
+      position: absolute;
+      bottom: 60rpx;
+      right: 40rpx;
+      background: #fff;
+      width: $icon-height;
+      height: $icon-height;
+      line-height: $icon-height;
+      border-radius: 50%;
+      text-align: center;
+      box-shadow: 1px 1px 2px 1px rgba(155, 155, 155, 0.3);
+      .flash-static {
+        transform: rotate(0deg);
+      }
+      .flash-action {
+        animation: flasher 1.5s linear infinite;
+      }
+      text {
+        color: #017fff;
+        font-size: 63rpx;
+        display: block;
+      }
+    }
+    @keyframes flasher {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+</style>

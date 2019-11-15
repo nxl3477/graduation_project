@@ -1,0 +1,8 @@
+// 是否正在加载中
+export const CHANGE_ISLOADING = 'CHANGE_ISLOADING'
+
+export const CHANGE_USER_ISLOGIN = 'CHANGE_USER_ISLOGIN'
+
+export const ACCREDIT_USER = 'ACCREDIT_USER'
+
+export const SET_RECORD = 'SET_RECORD'
