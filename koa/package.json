@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.1.0",
-    "apollo-server-koa": "^2.1.0",
+    "apollo-server-koa": "^2.14.2",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "chromium": "^1.0.2",
