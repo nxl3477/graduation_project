@@ -37,7 +37,7 @@
     "md5": "^2.2.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
-    "puppeteer": "^1.10.0",
+    "puppeteer": "^1.13.0",
     "puppeteer-core": "^1.8.0",
     "request": "^2.88.0",
     "typescript": "^3.0.3"
