@@ -22,7 +22,7 @@
     "graphql-server-koa": "^1.4.0",
     "graphql-tools": "^4.0.0",
     "jsonwebtoken": "^8.3.0",
-    "knex": "^0.15.2",
+    "knex": "^2.3.0",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-cors": "^0.0.16",
